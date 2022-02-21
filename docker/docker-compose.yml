@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+
+  api:
+    container_name: microservice_api
+    image: microservice/api:latest
+    build:
+      context: ./api
+      args:
+        - USER_NAME=$USER
+    depends_on:
+      - calculation
+    ports: 
+      - 5999:6000
+    stdin_open: true
+    tty: true
+    volumes:
+       - $PWD/../src/api/:/home/$USER:rw
+    hostname : api
+    privileged: true
+    restart: unless-stopped
+
+  calculation:
+    container_name: microservice_calculation
+    image: microservice/calculation:latest
+    build:
+      context: ./calculation
+      args:
+        - USER_NAME=$USER
+    depends_on:
+      - postgresql
+    ports: 
+      - 6000
+    stdin_open: true
+    tty: true
+    volumes:
+       - $PWD/../src/calculation/:/home/$USER:rw
+    hostname : calculation
+    privileged: true
+    restart: unless-stopped
+
+  postgresql:
+    container_name: microservice_database
+    image: microservice/postgresql:latest
+    build:
+      context: ./database
+    ports:
+      - 5444:5432
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/Data/microservice/postgresql/data:/var/lib/postgresql/data
+      - /mnt/Data/microservice/postgresql/etc:/etc/postgresql
+      - /mnt/Data/microservice/postgresql/log:/var/log/postgresql
+    env_file:
+      - ./database/include/database.env # configure postgres
+    restart: unless-stopped

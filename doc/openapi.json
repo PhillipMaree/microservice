@@ -1,0 +1,209 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "Simple API",
+    "description" : "Volue Coding challenge API"
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/phillip.maree/volue/1.0.0"
+  }, {
+    "url" : "https://example.io/v1"
+  } ],
+  "components" : {
+    "securitySchemes" : {
+      "BasicAuth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    }
+  },
+  "security" : [ {
+    "BasicAuth" : [ ]
+  } ],
+  "paths" : {
+    "/health" : {
+      "get" : {
+        "description" : "Returns health of microservice",
+        "responses" : {
+          "200" : {
+            "description" : "Microservice online"
+          },
+          "400" : {
+            "description" : "Microservice offline"
+          }
+        }
+      }
+    },
+    "/data" : {
+      "post" : {
+        "description" : "Lets a user post a new batch of data",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "t", "v" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "t" : {
+                    "type" : "integer"
+                  },
+                  "v" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successfully updated database with new batch of data"
+          },
+          "400" : {
+            "description" : "Invalid request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/example1" : {
+      "get" : {
+        "description" : "Query statistica data on example 1",
+        "parameters" : [ {
+          "name" : "from",
+          "in" : "query",
+          "required" : false,
+          "description" : "Start of time range. Default to first entry if ommited.",
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "to",
+          "in" : "query",
+          "required" : false,
+          "description" : "End of time range. Default to last entry if ommited.",
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully returned range statistics",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "required" : [ "datapoint_name" ],
+                    "properties" : {
+                      "avg" : {
+                        "type" : "integer"
+                      },
+                      "sum" : {
+                        "type" : "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/example2" : {
+      "get" : {
+        "description" : "Query statistica data on example 2",
+        "parameters" : [ {
+          "name" : "from",
+          "in" : "query",
+          "required" : false,
+          "description" : "Start of time range. Default to first entry if ommited.",
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "to",
+          "in" : "query",
+          "required" : false,
+          "description" : "End of time range. Default to last entry if ommited.",
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully returned range statistics",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "required" : [ "datapoint_name" ],
+                    "properties" : {
+                      "range_avg" : {
+                        "type" : "integer"
+                      },
+                      "range_sum" : {
+                        "type" : "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
